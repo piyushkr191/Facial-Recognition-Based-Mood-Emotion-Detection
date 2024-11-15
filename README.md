@@ -42,4 +42,4 @@ Follow these steps to set up the project locally:
 
 ### Contributors
 
-- [Piyush Kumar](https://github.com/piyushkr191)
+- [Anshul Benhur](https://github.com/Benhur20)
