@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <title>Emotion Recognition</title>
+    <link rel="stylesheet" href="../staticFiles/index.css" type="text/css">
+</head>
+
+<body>
+    <h1>Emotion Recognition</h1>
+
+    <div class="container">
+        <div class="left">
+            <p id="clock">no faces found</p>
+            <script>
+                const clock = document.getElementById("clock");
+                const lastEmotion = document.getElementById("lastEmotion");
+
+                setInterval(() => {
+                    fetch("{{ url_for('time_feed') }}")
+                        .then(response => response.text())
+                        .then(text => {
+                            // Update clock with the full emotion response
+                            clock.innerHTML = text;
+
+                            // Extract dominant emotion from the response
+                            const dominantEmotionMatch = text.match(/<p>([^:]+) :\d+ %<\/p>/);
+                            if (dominantEmotionMatch) {
+                                lastEmotion.innerText = `Dominant Emotion: ${dominantEmotionMatch[1]}`;
+                            } else {
+                                lastEmotion.innerText = "No dominant emotion detected";
+                            }
+                        });
+                }, 500);  // Fetch every 500 ms
+            </script>
+        </div>
+
+        <div class="right">
+            <div class="col-lg-8 offset-lg-2">
+                <img src="{{ url_for('video_feed') }}" height="50%" alt="please wait...">
+            </div>
+        </div>
+
+        <!-- Start/Stop Button -->
+        <!-- <form method="post" action="{{ url_for('tasks') }}"> -->
+        <form method="post" action="{{ url_for('tasks') }}">    
+            <button type="submit" name="stop" value="Stop/Start">Stop/Start Camera</button>
+        </form>
+
+        <!-- Last Dominant Emotion Heading -->
+        <!-- <h2 id="lastEmotion" class="white-text">No dominant emotion detected</h2> -->
+    </div>
+</body>
+</html>
